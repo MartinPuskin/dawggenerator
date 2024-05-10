@@ -15,6 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define __STRICT_ANSI__
+
 #include <cstdio>
 #include <cassert>
 #include <vector>
@@ -31,8 +33,8 @@
 using namespace std;
 
 namespace {
-    const char KWordListFileName[] = "Word-List.txt";
-    const char KEncodedFileName[] = "Word-List.dat";
+    const char KWordListFileName[] = "00SonaList.txt";
+    const char KEncodedFileName[] = "SonaList.dat";
 
     const int KChildBitShift = 8;
     const int KChildIndexMask = 0x0FFFFF00;
@@ -292,7 +294,7 @@ void reduceGraph(GraphNode &rootNode, int maxNodeDepth) {
         UniqueNodeSet uniqueNodes(GraphNode::compareByHashThenDirect);
         rootNode.findNodesAtDepth(currentDepth, uniqueNodes);
 
-        printf("%d nodes\n", uniqueNodes.size());
+        printf("%lu nodes\n", static_cast<unsigned long>(uniqueNodes.size()));
 
         if (uniqueNodes.size() > 1) {
             for (auto node = uniqueNodes.begin(), nextNode = node; node != uniqueNodes.end(); node = nextNode) {
@@ -410,7 +412,7 @@ int main(int argc, char* argv[]) {
         vector<GraphNode*> indexedNodes;
         rootNode.indexNodes(indexedNodes);
         assert(indexedNodes.size() < (KChildIndexMask >> KChildBitShift));
-        printf("Will save %d nodes\n", indexedNodes.size());
+        printf("Will save %lu nodes\n", static_cast<unsigned long>(indexedNodes.size()));
 
         printf("Encoding graph\n");
         encodeGraph(indexedNodes);
